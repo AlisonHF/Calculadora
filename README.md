@@ -1,2 +1,3 @@
 # Calculadora
-Project of a functional calculator with basic operators and power operator, with GUI using PySide6
+- Projeto de uma calculadora funcional com operadores básicos e operador de potência.
+- GUI utilizando PySide6
