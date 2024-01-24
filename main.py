@@ -1,5 +1,6 @@
 import sys
 from PySide6.QtWidgets import QApplication
+from pathlib import Path
 from main_window import MainWindow, setupTheme
 from variables import WINDOW_ICON_PATH 
 from PySide6.QtGui import QIcon
@@ -7,7 +8,7 @@ from objects import Display, Info, ButtonsGrid
 
 
 # Configurando o set do icon
-def set_icon(caminho):
+def set_icon(caminho: Path):
      icon = QIcon(str(caminho))
  
      icon.addFile('files/10298172.jpg')
@@ -28,7 +29,7 @@ if __name__ == '__main__':
     window = MainWindow()
 
     # Info
-    info = Info('2.0 ^ 10.0 = 1024')
+    info = Info('')
     window.addWidgetToVLayout(info)
 
     # Display

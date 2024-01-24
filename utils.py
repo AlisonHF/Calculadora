@@ -6,17 +6,17 @@ NUM_OR_DOT_REGEX = re.compile(r'^[0-9.]$')
 
 
 # Função que checa um número e um ponto
-def isNumOrDot(string : str):
+def isNumOrDot(string : str) -> bool:
     return bool(NUM_OR_DOT_REGEX.search(string))
 
 
 # Função que checa se é vazio ou não
-def isEmpty(string: str):
+def isEmpty(string: str) -> int:
     return len(string) == 0
 
 
 # Função que verifica se um número é valido 
-def isValidNumber(string: str):
+def isValidNumber(string: str) -> bool:
     valid = False
     try:
         float(string)
@@ -27,7 +27,7 @@ def isValidNumber(string: str):
 
 
 # Função que converte um número float que pode ser int
-def converToNumber(string: str):
+def converToNumber(string: str) -> int | float:
     number = float(string)
 
     if number.is_integer():

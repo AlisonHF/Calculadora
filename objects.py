@@ -1,15 +1,14 @@
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Callable
 from PySide6.QtCore import Slot, Qt, Signal
 from PySide6.QtGui import QKeyEvent
 from PySide6.QtWidgets import (QLineEdit, QLabel, QWidget, QPushButton,
-                                QGridLayout)
+                                QGridLayout, QMessageBox)
 from variables import (BIG_FONT_SIZE, MEDIUM_FONT_SIZE, MINIMUM_WIDTH,
                         TEXTE_MARGIN)
 from variables import SMALL_FONT_SIZE
 from utils import isNumOrDot, isEmpty, isValidNumber, converToNumber
 import math
-if TYPE_CHECKING:
-    from main_window import MainWindow
+from main_window import MainWindow
 
 
 
@@ -22,12 +21,12 @@ class Display(QLineEdit):
     inputPressed = Signal(str)
     operatorPressed = Signal(str)
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.configStyle()
 
     # Configuração do estilo da janela
-    def configStyle(self):
+    def configStyle(self) -> None:
         # Set do tamanho da fonte
         self.setStyleSheet(f'font-size: {BIG_FONT_SIZE}px')
 
@@ -95,20 +94,20 @@ class Info(QLabel):
         super().__init__(text, parent)
         self.configStyle()
 
-    def configStyle(self):
+    def configStyle(self) -> None:
         # Set do tamanho da fonte
-        self.setStyleSheet(f'font-size> {SMALL_FONT_SIZE}')   
+        self.setStyleSheet(f'font-size: {MEDIUM_FONT_SIZE}px')   
 
         # Set do alinhamento do texto
         self.setAlignment(Qt.AlignmentFlag.AlignRight)    
 
 # Button
 class Button(QPushButton):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
         self.configStyle()
 
-    def configStyle(self):
+    def configStyle(self) -> None:
         # Setando a fonte e tamanhos
         font = self.font()
         font.setPixelSize(MEDIUM_FONT_SIZE)
@@ -117,7 +116,7 @@ class Button(QPushButton):
 
 # Grid
 class ButtonsGrid(QGridLayout):
-    def __init__(self, display: Display, info: Info, window,
+    def __init__(self, display: Display, info: Info, window: MainWindow,
                   *args, **kwargs) -> None:
         super().__init__(*args, **kwargs)
 
@@ -156,18 +155,18 @@ class ButtonsGrid(QGridLayout):
 
     # Getter de _equation
     @property
-    def equation(self):
+    def equation(self) -> str:
         return self._equation
     
     # Setter de _equation
     @equation.setter
-    def equation(self, value):
+    def equation(self, value: str) -> None:
         self._equation = value
         # Passa o valor para o info
         self.info.setText(value)
 
     # Constroi o grid com os caracteres
-    def _makeGrid(self):
+    def _makeGrid(self) -> None:
 
         # Conecta o sinal das teclas com o display
         self.display.eqPressed.connect(self._eq)
@@ -198,11 +197,11 @@ class ButtonsGrid(QGridLayout):
                 button.clicked.connect(buttonSlot)
 
     # Função que conecta um botão com um slot
-    def _connectButtonClicked(self, button, slot):
+    def _connectButtonClicked(self, button, slot) -> None:
         button.clicked.connect(slot)
 
     # Função para config dos botões especiais
-    def _configSpecialButton(self, button):
+    def _configSpecialButton(self, button) -> None:
         text = button.text()
 
         if text == 'C':
@@ -229,7 +228,7 @@ class ButtonsGrid(QGridLayout):
 
     # Cria uma função aninhada que executa uma função como Slot:       
     @Slot()
-    def _makeSlot(self, func, *args, **kwargs):
+    def _makeSlot(self, func: Callable, *args, **kwargs) -> Callable:
         @Slot(bool)
         def realSlot(_):
             func(*args, **kwargs)
@@ -237,7 +236,7 @@ class ButtonsGrid(QGridLayout):
     
     # Slot para a função de inverter o sinal do número
     @Slot()
-    def _invertNumber(self):
+    def _invertNumber(self) -> None:
         displayText = self.display.text()
 
         # Se não for um número válido ele não insere no display
@@ -250,7 +249,7 @@ class ButtonsGrid(QGridLayout):
         self.display.setFocus()
 
     # Insere o texto do botão no display
-    def _insertToDisplay(self, text):
+    def _insertToDisplay(self, text: str) -> None:
         # Atualiza o texto do display
         newDisplayValue = self.display.text() + text
 
@@ -262,7 +261,7 @@ class ButtonsGrid(QGridLayout):
 
     # Slot de config do clear do botão 'C'
     @Slot()
-    def _clear(self):
+    def _clear(self) -> None:
         # Limpa todas as váriaveis
         self._left = None
         self._right = None
@@ -273,7 +272,7 @@ class ButtonsGrid(QGridLayout):
 
     # Slot do igual
     @Slot()
-    def _eq(self):
+    def _eq(self) -> None:
         displayText = self.display.text()
 
         # Se não for um número:
@@ -320,12 +319,12 @@ class ButtonsGrid(QGridLayout):
 
     # Slot do backspace
     @Slot()
-    def _backspace(self):
+    def _backspace(self) -> None:
         self.display.backspace()
         self.display.setFocus()
 
     # Função de botões operadores
-    def _configLeftOp(self, text):
+    def _configLeftOp(self, text: str) -> None:
         displayText = self.display.text()
 
         # Limpa o display para digitar o número da direita
@@ -346,20 +345,20 @@ class ButtonsGrid(QGridLayout):
         self.equation = f'{self._left} {self._op}'
 
     # Telas de avisos
-    def _makeDialog(self, text):
+    def _makeDialog(self, text: str) -> QMessageBox:
         msgBox = self.window.makeMsgBox()
         msgBox.setText(text)
         return msgBox
     
     # Tela de erro
-    def _showError(self, text):
+    def _showError(self, text) -> None:
         msgBox = self._makeDialog(text)
         msgBox.setIcon(msgBox.Icon.Critical)
         msgBox.exec()
         self.display.setFocus()
 
     # Tela de informação
-    def _showInfo(self, text):
+    def _showInfo(self, text) -> None:
         msgBox = self._makeDialog(text)
         msgBox.setIcon(msgBox.Icon.Information)
         msgBox.exec()

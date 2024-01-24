@@ -21,17 +21,17 @@ class MainWindow(QMainWindow):
         self.setWindowTitle('Calculadora')
 
     # Função para adicionar widgets para o layout
-    def addWidgetToVLayout(self, widget: QWidget):
+    def addWidgetToVLayout(self, widget: QWidget) -> None:
         self.vLayout.addWidget(widget)
 
     # Função para determinar o tamanho da janela
-    def adjustFixedSize(self):
+    def adjustFixedSize(self) -> None:
         # Ultima coisa a ser feita
         self.adjustSize()
         self.setFixedSize(self.width(), self.height())
 
     # Construtor de janelas
-    def makeMsgBox(self):
+    def makeMsgBox(self) -> QMessageBox:
         return QMessageBox(self)
 
     
@@ -55,7 +55,7 @@ qss = f"""
 """
 
 # Set do tema
-def setupTheme():
+def setupTheme() -> None:
     qdarktheme.setup_theme(
         theme='dark',
         corner_shape='rounded',
