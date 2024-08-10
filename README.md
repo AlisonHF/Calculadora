@@ -19,5 +19,3 @@
 <p align="center">
   <img src="https://raw.githubusercontent.com/AlisonHF/Calculadora/main/files/exemplo.png" alt="Texto Alternativo">
 </p>
-
-# Projeto em desenvolvimento...
